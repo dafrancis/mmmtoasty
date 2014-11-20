@@ -12,9 +12,14 @@ class Color(object):
     BOLD = '\033[1m'
     END = '\033[0m'
 
+    @classmethod
+    def random_background(cls):
+        """String to set the terminal background to a random color."""
+        return '\033[1;37;' + str(random.randint(41, 46)) + 'm'
+
 
 class Skull(object):
-    """Skull animation."""
+    """Skull animation manager."""
     EYES = ''.join((
         '3$$$F "$$',
         Color.END,
@@ -96,9 +101,9 @@ class Skull(object):
         """Animate the skull."""
         for i in range(cycles):
             if i % 2 == 0:
-                print Skull.closed_mouth()
+                print cls.closed_mouth()
             else:
-                print Skull.open_mouth()
+                print cls.open_mouth()
             time.sleep(0.4)
             os.system('clear')
 
@@ -115,32 +120,41 @@ CREDITS = [
 ]
 
 
-MT = 69
-if len(sys.argv) > 1 and sys.argv[1].isdigit():
-    MT = int(sys.argv[1])
+def get_toasty_number():
+    if len(sys.argv) > 1 and sys.argv[1].isdigit():
+        return int(sys.argv[1])
+    return 69
 
-for i in range(25):
-    print '\033[1;37;' + str(random.randint(41, 46)) + 'm' + (" " * 50)
-    time.sleep(0.05)
-    if i == 12:
-        print (
-            "\033[1;37;41m###############   YOU     ARE  ###################"
-        )
-    if i == 13:
-        print (
-            "\033[1;37;41m##############   MOTHER FUCKER   #################"
-        )
-print '\033[0m'
-time.sleep(1)
-os.system('clear')
 
-Skull.animate(MT)
-
-while len(CREDITS) > 1:
+def display_intro():
     for i in range(25):
-        if len(CREDITS) < 25:
-            exit()
-        print CREDITS[i]
-    time.sleep(0.2)
+        print Color.random_background() + (" " * 50)
+        time.sleep(0.05)
+        if i == 12:
+            print (
+                "\033[1;37;41m###############   YOU     ARE  ###################"
+            )
+        if i == 13:
+            print (
+                "\033[1;37;41m##############   MOTHER FUCKER   #################"
+            )
+    print Color.END
+    time.sleep(1)
     os.system('clear')
-    CREDITS.pop(0)
+
+
+def display_credits():
+    while len(CREDITS) > 1:
+        for i in range(25):
+            if len(CREDITS) < 25:
+                exit()
+            print CREDITS[i]
+        time.sleep(0.2)
+        os.system('clear')
+        CREDITS.pop(0)
+
+if __name__ == '__main__':
+    MT = get_toasty_number()
+    display_intro()
+    Skull.animate(MT)
+    display_credits()
