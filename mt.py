@@ -7,55 +7,100 @@ import time
 
 
 class Color(object):
+    """Color enum for showing terminal colors."""
     RED = '\033[91m'
     BOLD = '\033[1m'
     END = '\033[0m'
 
 
-EYES = ''.join((
-    '3$$$F "$$',
-    Color.END,
-    "O",
-    Color.RED,
-    '$b   $"$$$$$',
-    Color.END,
-    "O",
-    Color.RED,
-    '$  $$$$*"',
-))
-SKULL = '\n'.join((
-    '      .ed"""" """$$$$be.',
-    '     -"           ^""**$$$e.',
-    '   ."                   \'$$$c',
-    '  /                      "4$$b',
-    ' d  3                      $$$$',
-    ' $  *                   .$$$$$$',
-    '.$  ^c           $$$$$e$$$$$$$$.',
-    'd$L  4.         4$$$$$$$$$$$$$$b',
-    '$$$$b ^ceeeee.  4$$ECL.F*$$$$$$$',
-    '$$$$P d$$$$F $ $$$$$$$$$- $$$$$$',
-    EYES,
-    ' $$P"  "$$b   .$ $$$$$...e$$$$',
-    '  *c    ..    $$ 3$$$$$$$$$$eF',
-    '    %ce""    $$$  $$$$$$$$$$*',
-    '     *$e.    *** d$$$$$"L$$',
-    '      $$$      4J$$$$$% $$$',
-    '     $"\'$=e....$*$$**$cz$$"',
-))
-LAUGH = '\n'.join((
-    '',
-    '     $$$                $$',
-    '      $$$             $$$$'
-))
-JAW = '\n'.join((
-    '',
-    '     $  *=%4.$ L L$ P3$$$F',
-    '     $   "%*ebJLzb$e$$$$$b',
-    '      %..      4$$$$$$$$$$',
-    '       $$$e   z$$$$$$$$$$',
-    '        "*$c  "$$$$$$$P"',
-    '          """*$$$$$$$"'
-))
+class Skull(object):
+    """Skull animation."""
+    EYES = ''.join((
+        '3$$$F "$$',
+        Color.END,
+        "O",
+        Color.RED,
+        '$b   $"$$$$$',
+        Color.END,
+        "O",
+        Color.RED,
+        '$  $$$$*"',
+    ))
+    SKULL = '\n'.join((
+        '      .ed"""" """$$$$be.',
+        '     -"           ^""**$$$e.',
+        '   ."                   \'$$$c',
+        '  /                      "4$$b',
+        ' d  3                      $$$$',
+        ' $  *                   .$$$$$$',
+        '.$  ^c           $$$$$e$$$$$$$$.',
+        'd$L  4.         4$$$$$$$$$$$$$$b',
+        '$$$$b ^ceeeee.  4$$ECL.F*$$$$$$$',
+        '$$$$P d$$$$F $ $$$$$$$$$- $$$$$$',
+        EYES,
+        ' $$P"  "$$b   .$ $$$$$...e$$$$',
+        '  *c    ..    $$ 3$$$$$$$$$$eF',
+        '    %ce""    $$$  $$$$$$$$$$*',
+        '     *$e.    *** d$$$$$"L$$',
+        '      $$$      4J$$$$$% $$$',
+        '     $"\'$=e....$*$$**$cz$$"',
+    ))
+    LAUGH = '\n'.join((
+        '',
+        '     $$$                $$',
+        '      $$$             $$$$'
+    ))
+    JAW = '\n'.join((
+        '',
+        '     $  *=%4.$ L L$ P3$$$F',
+        '     $   "%*ebJLzb$e$$$$$b',
+        '      %..      4$$$$$$$$$$',
+        '       $$$e   z$$$$$$$$$$',
+        '        "*$c  "$$$$$$$P"',
+        '          """*$$$$$$$"'
+    ))
+    TOASTY_TEXT = "\n          Mmmm... Toasty"
+    CRACK = (
+        "\n       PROGRAM IS CRACK BY"
+        "\n    HACK SQUAD CHECKMATE 1992"
+        "\n        SERBIA BEST NATION\n"
+    )
+
+    @classmethod
+    def closed_mouth(cls):
+        """Closed Mouth."""
+        return ''.join((
+            Color.RED,
+            cls.SKULL,
+            cls.JAW,
+            Color.END,
+            cls.TOASTY_TEXT,
+            cls.CRACK,
+        ))
+
+    @classmethod
+    def open_mouth(cls):
+        """Open Mouth."""
+        return ''.join((
+            Color.RED,
+            cls.SKULL,
+            cls.LAUGH,
+            cls.JAW,
+            Color.END,
+            cls.TOASTY_TEXT,
+            cls.CRACK
+        ))
+
+    @classmethod
+    def animate(cls, cycles):
+        """Animate the skull."""
+        for i in range(cycles):
+            if i % 2 == 0:
+                print Skull.closed_mouth()
+            else:
+                print Skull.open_mouth()
+            time.sleep(0.4)
+            os.system('clear')
 
 CREDITS = [
     "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
@@ -69,13 +114,6 @@ CREDITS = [
     "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
 ]
 
-TOASTY_TEXT = "\n          Mmmm... Toasty"
-
-CRACK = (
-    "\n       PROGRAM IS CRACK BY"
-    "\n    HACK SQUAD CHECKMATE 1992"
-    "\n        SERBIA BEST NATION\n"
-)
 
 MT = 69
 if len(sys.argv) > 1 and sys.argv[1].isdigit():
@@ -96,13 +134,7 @@ print '\033[0m'
 time.sleep(1)
 os.system('clear')
 
-for i in range(MT):
-    if i % 2 == 0:
-        print Color.RED + SKULL + JAW + Color.END + TOASTY_TEXT + CRACK
-    else:
-        print Color.RED + SKULL + LAUGH + JAW + Color.END + TOASTY_TEXT + CRACK
-    time.sleep(0.4)
-    os.system('clear')
+Skull.animate(MT)
 
 while len(CREDITS) > 1:
     for i in range(25):
