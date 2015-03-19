@@ -134,7 +134,7 @@ class MMMToasty(object):
     def display_intro(self):
         """Display the intro."""
         for i in range(25):
-            print Color.random_background() + (" " * 50)
+            print Color.random_background() + (" " * 50) + Color.END
             time.sleep(0.05)
             if i == 12:
                 print self.INTRO_TEXT[0]
